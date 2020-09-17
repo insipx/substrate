@@ -527,7 +527,7 @@ pub trait CliConfiguration<DCV: DefaultConfigurationValues = ()>: Sized {
 		Ok(self.shared_params().log_filters().join(","))
 	}
 
-	/// Initialize substrate. This must be done only once.
+	/// Initialize substrate. This must be done only once per process.
 	///
 	/// This method:
 	///
@@ -536,11 +536,14 @@ pub trait CliConfiguration<DCV: DefaultConfigurationValues = ()>: Sized {
 	/// 3. Initialize the logger
 	fn init<C: SubstrateCli>(&self) -> Result<()> {
 		let logger_pattern = self.log_filters()?;
+		let tracing_receiver = self.tracing_receiver()?;
+		let tracing_targets = self.tracing_targets()?;
 
 		sp_panic_handler::set(&C::support_url(), &C::impl_version());
 
-		fdlimit::raise_fd_limit();
-		init_logger(&logger_pattern);
+		if let Err(e) = init_logger(&logger_pattern, tracing_receiver, tracing_targets) {
+			log::warn!("💬 Problem initializing global logging framework: {:}", e)
+		}
 
 		Ok(())
 	}
