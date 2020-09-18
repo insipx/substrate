@@ -1273,8 +1273,8 @@ macro_rules! decl_module {
 			$crate::traits::OnInitialize<$trait_instance::BlockNumber>
 			for $module<$trait_instance$(, $instance)?> where $( $other_where_bounds )*
 		{
-			fn on_initialize(_block_number_not_used: $trait_instance::BlockNumber) -> $return {
-				$crate::sp_tracing::enter_span!("on_initialize");
+			fn on_initialize(_block_number_not_used: <$trait_instance as $system::Trait>::BlockNumber) -> $return {
+				$crate::sp_tracing::enter_span!($crate::sp_tracing::trace_span!("on_initialize"));
 				{ $( $impl )* }
 			}
 		}
@@ -1290,7 +1290,7 @@ macro_rules! decl_module {
 			for $module<$trait_instance$(, $instance)?> where $( $other_where_bounds )*
 		{
 			fn on_initialize($param: $param_ty) -> $return {
-				$crate::sp_tracing::enter_span!("on_initialize");
+				$crate::sp_tracing::enter_span!($crate::sp_tracing::trace_span!("on_initialize"));
 				{ $( $impl )* }
 			}
 		}
@@ -1316,7 +1316,7 @@ macro_rules! decl_module {
 			for $module<$trait_instance$(, $instance)?> where $( $other_where_bounds )*
 		{
 			fn on_runtime_upgrade() -> $return {
-				$crate::sp_tracing::enter_span!("on_runtime_upgrade");
+				$crate::sp_tracing::enter_span!($crate::sp_tracing::trace_span!("on_runtime_upgrade"));
 				{ $( $impl )* }
 			}
 		}
@@ -1370,8 +1370,9 @@ macro_rules! decl_module {
 			$crate::traits::OnFinalize<$trait_instance::BlockNumber>
 			for $module<$trait_instance$(, $instance)?> where $( $other_where_bounds )*
 		{
-			fn on_finalize(_block_number_not_used: $trait_instance::BlockNumber) {
-				$crate::sp_tracing::enter_span!("on_finalize");
+
+			fn on_finalize(_block_number_not_used: <$trait_instance as $system::Trait>::BlockNumber) {
+				$crate::sp_tracing::enter_span!($crate::sp_tracing::trace_span!("on_finalize"));
 				{ $( $impl )* }
 			}
 		}
@@ -1387,7 +1388,7 @@ macro_rules! decl_module {
 			for $module<$trait_instance$(, $instance)?> where $( $other_where_bounds )*
 		{
 			fn on_finalize($param: $param_ty) {
-				$crate::sp_tracing::enter_span!("on_finalize");
+				$crate::sp_tracing::enter_span!($crate::sp_tracing::trace_span!("on_finalize"));
 				{ $( $impl )* }
 			}
 		}
@@ -1456,7 +1457,7 @@ macro_rules! decl_module {
 		$vis fn $name(
 			$origin: $origin_ty $(, $param: $param_ty )*
 		) -> $crate::dispatch::DispatchResult {
-			$crate::sp_tracing::enter_span!(stringify!($name));
+			$crate::sp_tracing::enter_span!($crate::sp_tracing::trace_span!(stringify!($name)));
 			{ $( $impl )* }
 			Ok(())
 		}
@@ -1475,7 +1476,7 @@ macro_rules! decl_module {
 	) => {
 		$(#[$fn_attr])*
 		$vis fn $name($origin: $origin_ty $(, $param: $param_ty )* ) -> $result {
-			$crate::sp_tracing::enter_span!(stringify!($name));
+			$crate::sp_tracing::enter_span!($crate::sp_tracing::trace_span!(stringify!($name)));
 			$( $impl )*
 		}
 	};
