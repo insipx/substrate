@@ -43,10 +43,10 @@ sc-runtime-test = { version = "2.0.0-rc5", path = "runtime-test" }
 substrate-test-runtime = { version = "2.0.0-rc5", path = "../../test-utils/runtime" }
 sp-state-machine = { version = "0.8.0-rc5", path = "../../primitives/state-machine" }
 test-case = "0.3.3"
-sp-runtime = { version = "2.0.0-rc5", path = "../../primitives/runtime" }
-sp-tracing = { version = "2.0.0-rc5", path = "../../primitives/tracing" }
-sc-tracing = { version = "2.0.0-rc5", path = "../tracing" }
-tracing = "0.1.18"
+sp-runtime = { version = "2.0.0-rc6", path = "../../primitives/runtime" }
+sp-tracing = { version = "2.0.0-rc6", path = "../../primitives/tracing" }
+sc-tracing = { version = "2.0.0-rc6", path = "../tracing" }
+tracing = "0.1.19"
 tracing-subscriber = "0.2.10"
 
 [features]
