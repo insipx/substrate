@@ -72,6 +72,17 @@ pub trait TraceHandler: Send + Sync {
 	fn handle_span(&self, span: SpanDatum);
 }
 
+
+/// Represents a tracing event, complete with values
+#[derive(Debug)]
+pub struct TraceEvent {
+	pub name: &'static str,
+	pub target: String,
+	pub level: Level,
+	pub values: Values,
+	pub parent_id: Option<Id>,
+}
+
 /// Represents a single instance of a tracing span
 #[derive(Debug)]
 pub struct SpanDatum {
