@@ -621,17 +621,12 @@ impl<B: BlockT, H: ExHashT> Protocol<B, H> {
 		match message {
 			GenericMessage::Status(_) =>
 				debug!(target: "sub-libp2p", "Received unexpected Status"),
-/*			GenericMessage::BlockRequest(r) => self.on_block_request(who, r),
+  			GenericMessage::BlockRequest(r) => self.on_block_request(who, r),
 			GenericMessage::BlockResponse(r) => {
 				let outcome = self.on_block_response(who.clone(), r);
 				self.update_peer_info(&who);
 				return outcome
 			},
-			GenericMessage::BlockAnnounce(announce) => {
-				let outcome = self.on_block_announce(who.clone(), announce);
-				self.update_peer_info(&who);
-				return outcome;
-			},*/
 			GenericMessage::BlockAnnounce(announce) =>
 				self.push_block_announce_validation(who.clone(), announce),
 			GenericMessage::Transactions(m) =>

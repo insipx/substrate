@@ -41,6 +41,8 @@ use tracing_subscriber::{CurrentSpan, layer::{Layer, Context}};
 
 use sc_telemetry::{telemetry, SUBSTRATE_INFO};
 use sp_tracing::{WASM_NAME_KEY, WASM_TARGET_KEY, WASM_TRACE_IDENTIFIER};
+use std::sync::atomic::AtomicU64;
+
 const ZERO_DURATION: Duration = Duration::from_nanos(0);
 
 /// Responsible for assigning ids to new spans, which are not re-used.
@@ -82,17 +84,6 @@ pub trait TraceHandler: Send + Sync {
 	/// Process a `TraceEvent`
 	fn handle_event(&self, event: TraceEvent);
 }
-
-/// Represents a tracing event, complete with values
-#[derive(Debug)]
-pub struct TraceEvent {
-	pub name: &'static str,
-	pub target: String,
-	pub level: Level,
-	pub values: Values,
-	pub parent_id: Option<Id>,
-}
-
 
 /// Represents a tracing event, complete with values
 #[derive(Debug)]
@@ -387,7 +378,7 @@ impl TraceHandler for LogTraceHandler {
 		if span_datum.values.is_empty() {
 			log::log!(
 				log_level(span_datum.level),
-				"{}: {}, time: {}",
+				"{}: {}, time: {}, id: {}, parent_id: {:?}",
 				span_datum.target,
 				span_datum.name,
 				span_datum.overall_time.as_nanos(),
