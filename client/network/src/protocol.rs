@@ -615,6 +615,8 @@ impl<B: BlockT, H: ExHashT> Protocol<B, H> {
 				self.push_block_announce_validation(who.clone(), announce),
 			GenericMessage::Transactions(m) =>
 				self.on_transactions(who, m),
+			GenericMessage::BlockResponse(_) =>
+				warn!(target: "sub-libp2p", "Received unexpected BlockResponse"),
 			GenericMessage::RemoteCallResponse(_) =>
 				warn!(target: "sub-libp2p", "Received unexpected RemoteCallResponse"),
 			GenericMessage::RemoteReadResponse(_) =>
@@ -625,6 +627,7 @@ impl<B: BlockT, H: ExHashT> Protocol<B, H> {
 				warn!(target: "sub-libp2p", "Received unexpected RemoteChangesResponse"),
 			GenericMessage::FinalityProofResponse(_) =>
 				warn!(target: "sub-libp2p", "Received unexpected FinalityProofResponse"),
+			GenericMessage::BlockRequest(_) |
 			GenericMessage::FinalityProofRequest(_) |
 			GenericMessage::RemoteReadChildRequest(_) |
 			GenericMessage::RemoteCallRequest(_) |
