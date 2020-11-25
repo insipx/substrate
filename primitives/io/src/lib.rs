@@ -1142,7 +1142,7 @@ mod tracing_setup {
 	/// set the global bridging subscriber once.
 	pub fn init_tracing() {
 		if !tracing_core::dispatcher::has_been_set() {
-			println!("Checking if set: {}", tracing_core::dispatcher::has_been_set);
+			// println!("Checking if set: {}", tracing_core::dispatcher::has_been_set);
 			set_global_default(Dispatch::new(PassingTracingSubsciber {}))
 				.expect("We only ever call this once");
 		}
