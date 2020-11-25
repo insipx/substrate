@@ -1093,7 +1093,7 @@ mod tracing_setup {
 	};
 	use super::{wasm_tracing, Crossing};
 
-	const TRACING_SET : AtomicBool = AtomicBool::new(false);
+	static TRACING_SET : AtomicBool = AtomicBool::new(false);
 
 
 	/// The PassingTracingSubscriber implements `tracing_core::Subscriber`
@@ -1133,9 +1133,10 @@ mod tracing_setup {
 	/// Can be called multiple times from within the same process and will only
 	/// set the global bridging subscriber once.
 	pub fn init_tracing() {
-		if !tracing_core::dispatcher::has_been_set() {
+		if TRACING_SET.load(Ordering::Relaxed) {
 			set_global_default(Dispatch::new(PassingTracingSubsciber {}))
 				.expect("We only ever call this once");
+			TRACING_SET.store(true, Ordering::Relaxed);
 		}
 	}
 }
