@@ -1146,12 +1146,6 @@ mod tracing_setup {
 				.expect("We only ever call this once");
 			TRACING_SET.store(true, Ordering::Release);
 		}
-		/* if !tracing_core::dispatcher::has_been_set() {
-			// println!("Checking if set: {}", tracing_core::dispatcher::has_been_set);
-			set_global_default(Dispatch::new(PassingTracingSubsciber {}))
-				.expect("We only ever call this once");
-		}
-		*/
 	}
 }
 
