@@ -1144,7 +1144,7 @@ mod tracing_setup {
 		if TRACING_SET.load(Ordering::Relaxed) == false {
 			set_global_default(Dispatch::new(PassingTracingSubsciber {}))
 				.expect("We only ever call this once");
-			TRACING_SET.store(true, Ordering::Release);
+			TRACING_SET.store(true, Ordering::Relaxed);
 		}
 	}
 }
