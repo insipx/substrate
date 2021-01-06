@@ -140,6 +140,7 @@ where
 				Some("wasm") => {
 					let wasm = WasmBlob::new(fs::read(&path).map_err(handle_err)?);
 					let version = Self::runtime_version(executor, &wasm, Some(128))?;
+					println!("Version: {:?}", version);
 					if let Some(_duplicate) = overrides.insert(version.spec_version, wasm) {
 						duplicates.push(format!("{}", path.display()));
 					}
